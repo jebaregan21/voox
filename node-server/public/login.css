@@ -1,0 +1,31 @@
+body {
+    background-color: rgb(214, 214, 214);
+  }
+  div {
+    height: 100%;
+  }
+  .margin {
+    margin-top: 40%;
+   
+  }
+  .form-container {
+    box-shadow: 0px 0px 10px 0px;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 3%;
+  }
+  .align {
+    justify-content: center;
+  }
+  .createlink{
+    margin-top: 2vh;
+    margin-left: 1vh;
+    text-decoration: underline;
+  }
+  #regusername{
+    display: none;
+    color: red;
+  }
+  
+  
+  

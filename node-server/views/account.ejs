@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= firstName %></title>
+    <link rel="icon" type="image/png" href="/public/voox.png" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      .container {
+        min-height: 100vh;
+        min-width: 100vh;
+        background-color: #ffffff;
+      }
+      nav {
+        min-width: 100vh;
+      }
+      body {
+        background-color: black;
+      }
+      .row {
+        padding: 3%;
+      }
+      #form1 {
+        display: block;
+      }
+      #form-container {
+        margin: 10vh;
+        padding: 3vh;
+      }
+      #form2 {
+        visibility: collapse;
+        margin-top: 3vh;
+      }
+      #regtitle {
+        color: red;
+        display: none;
+      }
+      #profile-pic{
+        height: 30vh;
+        width: 30vh;
+        border: black;
+        border-width: 3px;
+      }
+      .account-title{
+        margin: 3vh;
+      }
+      .description{
+        margin-top: 3vh;
+      }
+      .video-container{
+        border: 3px, solid, black;
+        padding: 2vh;
+      }
+      .video{
+        margin: 2vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">VOOX</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item ">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/upload"
+                >Upload<span class="sr-only">(current)</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/account">Welcome, <%= userName %></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Logout</a>
+            </li>
+          </ul>
+          <form action="/" method="POST" class="form-inline my-2 my-lg-0">
+            <input
+              class="form-control mr-sm-2"
+              type="search"
+              name="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+              Search
+            </button>
+          </form>
+        </div>
+      </nav>
+      <div class="row">
+       <div class="piccontainer">
+         <img id="profile-pic" src="/images/avatar.png">
+       </div>
+       <div class="account-title">
+         <h3><%= firstName %></h3>
+         <div class="description">
+          <p><%= description %></p>
+        </div>
+       </div>
+      </div>
+      <div class="row">
+        <div class="video-container">
+          <h4>Movies :</h4>
+          <% if (movies.length > 0) { %>
+          <% movies.forEach(function(movie){ %>
+          <div class="video">
+            <% var link = '/video/'+ movie._id %>
+            <a href = "<%= link %>"><%= movie.title %></a>
+            <% if (permission) { %>
+              /
+              <% link = '/delete/'+ movie._id %>
+              <a href="<%= link %>">delete</a>
+            <% } %>
+          </div>
+          <% }) %>
+          <% } else{ %>
+            <h6 class="video">No movie has been uploaded by this user</h6>
+          <% } %>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <script>
+      $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+          event.preventDefault();
+          return false;
+        }
+      });
+    </script>
+  </body>
+</html>

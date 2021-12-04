@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="icon" type="image/png" href="/public/voox.png">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      .container {
+        min-height: 100vh;
+        min-width: 100vh;
+        background-color: #FFFFFF;
+      }
+      nav {
+        min-width: 100vh;
+      }
+      body{
+          background-color: black;
+      }
+      .row{
+          padding: 3%;
+      }
+      video{
+          max-width: 100vh;
+          height: 60vh;
+      }
+      .row{
+          padding-bottom: 0%;
+          margin-bottom: 0%;
+      }
+      #credit{
+        margin-top: 4vh;
+        margin-left: 4vh;
+      }
+      .titlecontainer{
+        margin: 3vh;
+        max-width: 100vh;
+        height: 60vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="/">VOOX</a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                  <a class="nav-link" href="/"
+                    >Home <span class="sr-only">(current)</span></a
+                  >
+                </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/upload">Upload</a>
+                  </li>
+                <li class="nav-item">
+                  <% var accLink = '/account/' + userId %>
+                <a class="nav-link" href="<%= accLink %>">Hello, <%= firstName %></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/logout">Logout</a>
+                </li>
+              </ul>
+              <form action="/" method="POST" class="form-inline my-2 my-lg-0">
+                <input
+                  class="form-control mr-sm-2"
+                  type="search"
+                  name="search"
+                  placeholder="Search"
+                  aria-label="Search"
+                />
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                  Search
+                </button>
+              </form>
+            </div>
+          </nav>
+      <div class="row">
+        <% var vidId = id; var link = '/vid/'+vidId %>
+          <video src="<%= link %>" type="video/mp4" controls></video>
+          <p id="credit">Uploaded By : <a href="/account/<%= ownerId %>"><%= ownerName %></a></p>
+      </div>
+      <div class="titlecontainer" class="row">
+          <h3><%= title %></h3>
+          <p>views : <%= views %></p>
+      </div>
+      <div class="row">
+        <p><%= description %></p>
+    </div>
+    </div>
+  </body>
+</html>

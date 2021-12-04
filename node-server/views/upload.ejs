@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload</title>
+    <link rel="icon" type="image/png" href="/public/voox.png" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      .container {
+        min-height: 100vh;
+        min-width: 100vh;
+        background-color: #ffffff;
+      }
+      nav {
+        min-width: 100vh;
+      }
+      body {
+        background-color: black;
+      }
+      .row {
+        padding: 3%;
+      }
+      #form1 {
+        display: block;
+      }
+      #form-container {
+        margin: 10vh;
+        padding: 3vh;
+      }
+      #form2 {
+        visibility: collapse;
+        margin-top: 3vh;
+      }
+      #regtitle {
+        color: red;
+        display: none;
+      }
+      .progress-wrapper {
+        margin: 2vh;
+        width:100%;
+        display: none;
+    }
+    .progress-wrapper .progress {
+        background-color:green;
+        width:0%;
+    }
+    .status{
+      margin-top: 2vh;
+      display: none;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">VOOX</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item ">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/upload"
+                >Upload<span class="sr-only">(current)</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <% var link = '/account/' + id %>
+              <a class="nav-link" href="<%= link %>"><%= firstName %></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Logout</a>
+            </li>
+          </ul>
+          <form action="/" method="POST" class="form-inline my-2 my-lg-0">
+            <input
+              class="form-control mr-sm-2"
+              type="search"
+              name="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+              Search
+            </button>
+          </form>
+        </div>
+      </nav>
+      <div id="form-container">
+        <form
+          id="form1"
+          action="/upload"
+          method="POST"
+          enctype="multipart/form-data"
+        >
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input
+              type="text"
+              class="form-control"
+              name="title"
+              id="title"
+              placeholder="Video Title"
+            />
+            <small id="titlehelp" class="form-text text-muted"
+              >Cannot be changed after submission</small
+            >
+            <p id="regtitle">Title must be greater than 4 characters</p>
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <input
+              type="text"
+              class="form-control"
+              name="description"
+              id="description"
+              placeholder="Description"
+            />
+          </div>
+          <div class="form-group">
+            <label for="title">Upload the video</label>
+            <input
+              type="file"
+              class="form-control"
+              name="video"
+              id="video"
+              accept="video/mp4"
+            />
+            <small id="titlehelp" class="form-text text-muted"
+              >Must be in mp4 format</small
+            >
+          </div>
+          <div class="form-group">
+            <label for="title">Upload the thumbnail</label>
+            <input
+              type="file"
+              class="form-control"
+              name="image"
+              id="image"
+              accept="image/jpg"
+            />
+            <small id="titlehelp" class="form-text text-muted"
+              >Must be in jpg format</small
+            >
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <div class="progress-wrapper">
+            <div id="progress-bar-file1" class="progress"></div>
+          </div>
+          <h5 class="status">Completed</h5>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+          event.preventDefault();
+          return false;
+        }
+      });
+
+      $("#form1").on('submit', e => {
+        e.preventDefault()
+        let formdata = new FormData();
+        let bool = true
+        const title = $('#title').val()
+        const description = $('#description').val()
+
+        if(title == null || description==null || $('#video').val() == '' || $('#image').val()==''){
+          bool == false
+          alert('All the inputs have to be filled')
+          return false
+        }
+        if(bool){
+        formdata.append('title',title)
+        formdata.append('description',description)
+        formdata.append('video', $('#video')[0].files[0])
+        formdata.append('image',$('#image')[0].files[0])
+    
+        var request = new XMLHttpRequest();
+    
+        request.upload.addEventListener('progress', function (e) {
+            let fileSize = $('#video')[0].files[0].size + $('#image')[0].files[0].size
+            $('.progress-wrapper').css('display','block')
+            if (e.loaded <= fileSize) {
+                let percent = Math.round(e.loaded / fileSize * 100);
+                $('#progress-bar-file1').width(percent + '%').html(percent + '%');
+                console.log(percent)
+            } 
+    
+            if(e.loaded == e.total){
+                $('#progress-bar-file1').width(100 + '%').html(100 + '%');
+                $('.status').css('display','block')
+                setTimeout(function(){
+                  location.href = '/';
+                },2000)
+            }
+        });   
+    
+        request.open('post', '/upload');
+        request.timeout = 1000000;
+        request.send(formdata);
+      }
+    })
+
+    </script>
+  </body>
+</html>

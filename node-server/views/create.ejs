@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create an account</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="/public/create.css" type="text/css" />
+  </head>
+
+  <body class="image">
+    <div class="container-fill h-100">
+      <div class="row justify-content-center h-100">
+        <div class="float-right col-12 col-sm-6 col-md-3 color h-100">
+          <form class="form-container h-100 margin">
+            <div class="form-group">
+              <h3>Create an account</h3>
+            </div>
+            <div class="form-group">
+              <label for="firstname">Firstname</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Firstname"
+                name="firstname"
+                id="firstname"
+              />
+              <p id="regfirstname">Invalid firstname</p>
+            </div>
+            <div class="form-group">
+              <label for="lastname">Lastname</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Lastname"
+                name="lastname"
+                id="lastname"
+              />
+              <p id="reglastname">Invalid lastname</p>
+            </div>
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Username"
+                name="username"
+                id="username"
+              />
+              <p id="regusername">Invalid username</p>
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="abc@xyz.com"
+                name="email"
+                id="email"
+              />
+              <p id="regemail">Invalid email</p>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                placeholder="********"
+                name="password"
+                id="password"
+              />
+              <p id="regpassword">
+                Password must contain atleast 8 characters, atleast one number and an uppercase
+                character
+              </p>
+            </div>
+            <div class="form-group">
+              <label for="repassword">Re enter the password</label>
+              <input
+                type="password"
+                class="form-control"
+                placeholder="********"
+                name="repassword"
+                id="repassword"
+              />
+              <p id="regrepassword">Passwords do not match</p>
+            </div>
+            <div class="form-group">
+              <label for="description">Description</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Write about yourself"
+                name="description"
+                id="description"
+              />
+            </div>
+            <div class="form-group">
+              <button class="btn btn-primary btn-block">Register</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      $("form").submit((e) => {
+        e.preventDefault();
+        let bool = true;
+        const nameregex = /^[a-zA-Z ]{2,30}$/;
+        const userregex = /^[A-Za-z0-9_]{3,20}$/;
+        const emailregex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        const passwordregex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
+
+        if (!$("#firstname").val().match(nameregex)) {
+          bool = false;
+          $("#regfirstname").css("display", "block");
+        }
+        if (!$("#lastname").val().match(nameregex)) {
+          bool = false;
+          $("#reglastname").css("display", "block");
+        }
+        if (!$("#email").val().match(emailregex)) {
+          bool = false;
+          $("#regemail").css("display", "block");
+        }
+        if (!$("#username").val().match(userregex)) {
+          bool = false;
+          $("#regusername").css("display", "block");
+        }
+        if (!$("#password").val().match(passwordregex)) {
+          bool = false;
+          $("#regpassword").css("display", "block");
+        }
+        if ($("#password").val() !== $("#repassword").val()) {
+          bool = false;
+          $("#regrepassword").css("display", "block");
+        }
+
+        if (bool) {
+          let values = {};
+          $.each($("form").serializeArray(), function (i, field) {
+            values[field.name] = field.value;
+          });
+          $.ajax({
+            type: "POST",
+            url: "/create",
+            data: values,
+            success: (data) => {
+              if(data.verified == true){
+                window.location.href = "http://localhost:3000/login";
+              }
+            },
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

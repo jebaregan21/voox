@@ -1,0 +1,43 @@
+body {
+  background-color: gray;
+}
+div {
+  height: 100%;
+}
+.margin {
+  margin-top: 10%;
+}
+.form-container {
+  box-shadow: 0px 0px 10px 0px;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 3%;
+}
+.align {
+  justify-content: center;
+}
+
+#regfirstname {
+  color: red;
+  display: none;
+}
+#reglastname {
+  color: red;
+  display: none;
+}
+#regusername {
+  color: red;
+  display: none;
+}
+#regpassword {
+  color: red;
+  display: none;
+}
+#regrepassword {
+  color: red;
+  display: none;
+}
+#regemail {
+  color: red;
+  display: none;
+}
